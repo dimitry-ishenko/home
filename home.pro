@@ -11,4 +11,11 @@ OBJECTS_DIR = tmp
 DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES +=          \
+    gui/control.cpp \
     src/main.cpp    \
+
+HEADERS +=          \
+    gui/control.hpp \
+
+FORMS +=            \
+    gui/control.ui  \
