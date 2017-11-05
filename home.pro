@@ -10,12 +10,29 @@ OBJECTS_DIR = tmp
 
 DEFINES += QT_DEPRECATED_WARNINGS
 
-SOURCES +=          \
-    gui/control.cpp \
-    src/main.cpp    \
+SOURCES +=                  \
+    firmata/client.cpp      \
+    firmata/debounce.cpp    \
+    firmata/encoder.cpp     \
+    firmata/pin.cpp         \
+    firmata/pins.cpp        \
+    firmata/serial_port.cpp \
+    firmata/types.cpp       \
+    gui/control.cpp         \
+    src/main.cpp            \
 
-HEADERS +=          \
-    gui/control.hpp \
+HEADERS +=                  \
+    firmata/asio_or_boost.hpp \
+    firmata/call_chain.hpp  \
+    firmata/client.hpp      \
+    firmata/debounce.hpp    \
+    firmata/encoder.hpp     \
+    firmata/io_base.hpp     \
+    firmata/pin.hpp         \
+    firmata/pins.hpp        \
+    firmata/serial_port.hpp \
+    firmata/types.hpp       \
+    gui/control.hpp         \
 
-FORMS +=            \
-    gui/control.ui  \
+FORMS +=                    \
+    gui/control.ui          \

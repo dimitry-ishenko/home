@@ -1,0 +1,3 @@
+[submodule "firmata"]
+	path = firmata
+	url = /home/dimitry/app/lib/firmata
