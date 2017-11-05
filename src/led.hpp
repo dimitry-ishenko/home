@@ -10,6 +10,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 #include "color.hpp"
+#include "firmata/call_chain.hpp"
 #include "firmata/pin.hpp"
 #include "temp.hpp"
 
@@ -35,12 +36,21 @@ public:
     void level(int);
     auto level() const noexcept { return level_; }
 
+    ////////////////////
+    using cid = firmata::cid;
+    using int_call = firmata::call<void(int)>;
+
+    cid on_level_changed(int_call);
+    bool remove_call(cid id) { return chain_.erase(id); }
+
 private:
     ////////////////////
     led(firmata::pin&, bool dim);
 
     firmata::pin& pin_;
+
     int level_ = 0;
+    firmata::call_chain<int_call> chain_;
 
     void exec();
 };

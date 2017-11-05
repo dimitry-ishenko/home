@@ -24,9 +24,16 @@ led::led(firmata::pin& pin, bool dim) :
 ////////////////////////////////////////////////////////////////////////////////
 void led::level(int level)
 {
-    level_ = clamp(level, level_min, level_max);
-    exec();
+    level = clamp(level, level_min, level_max);
+    if(level != level_)
+    {
+        exec();
+        chain_(level_ = level);
+    }
 }
+
+////////////////////////////////////////////////////////////////////////////////
+led::cid led::on_level_changed(int_call fn) { return chain_.insert(std::move(fn)); }
 
 ////////////////////////////////////////////////////////////////////////////////
 void led::exec() { pin_.value(level_); }
