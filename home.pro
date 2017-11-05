@@ -19,7 +19,10 @@ SOURCES +=                  \
     firmata/serial_port.cpp \
     firmata/types.cpp       \
     gui/control.cpp         \
+    src/encoder.cpp         \
+    src/led.cpp             \
     src/main.cpp            \
+    src/temp.cpp            \
 
 HEADERS +=                  \
     firmata/asio_or_boost.hpp \
@@ -33,6 +36,11 @@ HEADERS +=                  \
     firmata/serial_port.hpp \
     firmata/types.hpp       \
     gui/control.hpp         \
+    src/clamp.hpp           \
+    src/color.hpp           \
+    src/encoder.hpp         \
+    src/led.hpp             \
+    src/temp.hpp            \
 
 FORMS +=                    \
     gui/control.ui          \
