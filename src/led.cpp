@@ -53,27 +53,67 @@ color_led::color_led(firmata::pin& red, firmata::pin& green, firmata::pin& blue,
 ////////////////////////////////////////////////////////////////////////////////
 void color_led::color(const rgb& value)
 {
-      red_ = clamp(get<red  >(value), color_min, color_max);
-    green_ = clamp(get<green>(value), color_min, color_max);
-     blue_ = clamp(get<blue >(value), color_min, color_max);
-     temp_ = from_rgb(rgb(red_, green_, blue_));
-    exec();
+    src::color red, green, blue;
+    std::tie(red, green, blue) = value;
+    red   = clamp(red  , color_min, color_max);
+    green = clamp(green, color_min, color_max);
+    blue  = clamp(blue , color_min, color_max);
+
+    if(red != red_ || green != green_ || blue != blue_)
+    {
+        auto value = src::rgb(red_ = red, green_ = green, blue_ = blue);
+        exec();
+
+        chain_rgb_(value);
+        auto temp = from_rgb(value);
+        if(temp != temp_) chain_temp_(temp_ = temp);
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 void color_led::color(temp value)
 {
-    temp_ = clamp(value, temp_min, temp_max);
-    std::tie(red_, green_, blue_) = to_rgb(temp_);
-    exec();
+    value = clamp(value, temp_min, temp_max);
+
+    if(value != temp_)
+    {
+        src::color red, green, blue;
+        std::tie(red, green, blue) = to_rgb(temp_ = value);
+
+        if(red != red_ || green != green_ || blue != blue_)
+        {
+            red_ = red; green_ = green; blue_ = blue;
+            exec();
+
+            chain_rgb_(rgb(red_, green_, blue_));
+        }
+        chain_temp_(temp_);
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 void color_led::level(int level)
 {
-    level_ = clamp(level, level_min, level_max);
-    exec();
+    level = clamp(level, level_min, level_max);
+    if(level != level_)
+    {
+        chain_level_(level_ = level);
+        exec();
+    }
 }
+
+////////////////////////////////////////////////////////////////////////////////
+color_led::cid color_led::on_color_changed( rgb_call fn)
+{ return chain_rgb_.insert(std::move(fn)); }
+
+color_led::cid color_led::on_color_changed(temp_call fn)
+{ return chain_temp_.insert(std::move(fn)); }
+
+color_led::cid color_led::on_level_changed( int_call fn)
+{ return chain_level_.insert(std::move(fn)); }
+
+bool color_led::remove_call(cid id)
+{ return chain_rgb_.erase(id) || chain_temp_.erase(id) || chain_level_.erase(id); }
 
 ////////////////////////////////////////////////////////////////////////////////
 void color_led::exec()

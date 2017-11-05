@@ -77,6 +77,18 @@ public:
     void level(int);
     auto level() const noexcept { return level_; }
 
+    ////////////////////
+    using cid = firmata::cid;
+    using  rgb_call = firmata::call<void(const rgb&)>;
+    using temp_call = firmata::call<void(temp)>;
+    using  int_call = firmata::call<void(int)>;
+
+    cid on_color_changed( rgb_call);
+    cid on_color_changed(temp_call);
+    cid on_level_changed( int_call);
+
+    bool remove_call(cid);
+
 private:
     ////////////////////
     color_led(firmata::pin&, firmata::pin&, firmata::pin&, bool dim);
@@ -86,6 +98,10 @@ private:
     int red_ = 255, green_ = 255, blue_ = 255;
     temp temp_ = from_rgb(rgb(red_, green_, blue_));
     int level_ = 0;
+
+    firmata::call_chain< rgb_call> chain_rgb_   { 0 };
+    firmata::call_chain<temp_call> chain_temp_  { 1 };
+    firmata::call_chain< int_call> chain_level_ { 2 };
 
     void exec();
 };
