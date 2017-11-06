@@ -9,6 +9,7 @@
 #define GUI_CONTROL_HPP
 
 ////////////////////////////////////////////////////////////////////////////////
+#include "src/led.hpp"
 #include <QWidget>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -23,7 +24,7 @@ class control : public QWidget
     Q_OBJECT
 
 public:
-    explicit control(QWidget* parent = nullptr);
+    explicit control(src::color_led&, QWidget* parent = nullptr);
     ~control();
 
 private:
