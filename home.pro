@@ -1,5 +1,7 @@
 QT += core gui widgets
+
 CONFIG += c++14
+CONFIG += object_parallel_to_source
 
 TARGET = home
 TEMPLATE = app
@@ -8,7 +10,7 @@ MOC_DIR = moc
 UI_DIR = moc
 OBJECTS_DIR = tmp
 
-DEFINES += QT_DEPRECATED_WARNINGS
+DEFINES += QT_DEPRECATED_WARNINGS ASIO_STANDALONE
 
 SOURCES +=                  \
     firmata/client.cpp      \
