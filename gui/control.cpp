@@ -32,59 +32,64 @@ control::control(src::color_led& led, QWidget* parent) :
     using namespace src;
 
     // level
-    connect(ui->level_slider, &QSlider::valueChanged,
-        [&](int value){ set(ui->level_spin, value); }
-    );
-    connect(ui->level_spin, VOID(QSpinBox, valueChanged, int),
-        [&](int value){ set(ui->level_slider, value); }
-    );
-    connect(ui->level_spin, VOID(QSpinBox, valueChanged, int),
-        [&](int value){ led.level(value); }
-    );
+    connect(ui->level_slider, &QSlider::valueChanged, [&](int value)
+    {
+        set(ui->level_spin, value);
+        led.level(value);
+    });
+    connect(ui->level_spin, VOID(QSpinBox, valueChanged, int), [&](int value)
+    {
+        set(ui->level_slider, value);
+        led.level(value);
+    });
 
     // temp
-    connect(ui->temp_slider, &QSlider::valueChanged,
-        [&](int value){ set(ui->temp_spin, value); }
-    );
-    connect(ui->temp_spin, VOID(QSpinBox, valueChanged, int),
-        [&](int value){ set(ui->temp_slider, value); }
-    );
-    connect(ui->temp_spin, VOID(QSpinBox, valueChanged, int),
-        [&](int value){ led.color(static_cast<temp>(value)); }
-    );
+    connect(ui->temp_slider, &QSlider::valueChanged, [&](int value)
+    {
+        set(ui->temp_spin, value);
+        led.color(static_cast<temp>(value));
+    });
+    connect(ui->temp_spin, VOID(QSpinBox, valueChanged, int), [&](int value)
+    {
+        set(ui->temp_slider, value);
+        led.color(static_cast<temp>(value));
+    });
 
     // red
-    connect(ui->red_slider, &QSlider::valueChanged,
-        [&](int value){ set(ui->red_spin, value); }
-    );
-    connect(ui->red_spin, VOID(QSpinBox, valueChanged, int),
-        [&](int value){ set(ui->red_slider, value); }
-    );
-    connect(ui->red_spin, VOID(QSpinBox, valueChanged, int),
-        [&](int value){ led.color(rgb(value, ui->green_spin->value(), ui->blue_spin->value())); }
-    );
+    connect(ui->red_slider, &QSlider::valueChanged, [&](int value)
+    {
+        set(ui->red_spin, value);
+        led.color(rgb(value, ui->green_spin->value(), ui->blue_spin->value()));
+    });
+    connect(ui->red_spin, VOID(QSpinBox, valueChanged, int), [&](int value)
+    {
+        set(ui->red_slider, value);
+        led.color(rgb(value, ui->green_spin->value(), ui->blue_spin->value()));
+    });
 
     // green
-    connect(ui->green_slider, &QSlider::valueChanged,
-        [&](int value){ set(ui->green_spin, value); }
-    );
-    connect(ui->green_spin, VOID(QSpinBox, valueChanged, int),
-        [&](int value){ set(ui->green_slider, value); }
-    );
-    connect(ui->green_spin, VOID(QSpinBox, valueChanged, int),
-        [&](int value){ led.color(rgb(ui->red_spin->value(), value, ui->blue_spin->value())); }
-    );
+    connect(ui->green_slider, &QSlider::valueChanged, [&](int value)
+    {
+        set(ui->green_spin, value);
+        led.color(rgb(ui->red_spin->value(), value, ui->blue_spin->value()));
+    });
+    connect(ui->green_spin, VOID(QSpinBox, valueChanged, int), [&](int value)
+    {
+        set(ui->green_slider, value);
+        led.color(rgb(ui->red_spin->value(), value, ui->blue_spin->value()));
+    });
 
     // blue
-    connect(ui->blue_slider, &QSlider::valueChanged,
-        [&](int value){ set(ui->blue_spin, value); }
-    );
-    connect(ui->blue_spin, VOID(QSpinBox, valueChanged, int),
-        [&](int value){ set(ui->blue_slider, value); }
-    );
-    connect(ui->blue_spin, VOID(QSpinBox, valueChanged, int),
-        [&](int value){ led.color(rgb(ui->red_spin->value(), ui->green_spin->value(), value)); }
-    );
+    connect(ui->blue_slider, &QSlider::valueChanged, [&](int value)
+    {
+        set(ui->blue_spin, value);
+        led.color(rgb(ui->red_spin->value(), ui->green_spin->value(), value));
+    });
+    connect(ui->blue_spin, VOID(QSpinBox, valueChanged, int), [&](int value)
+    {
+        set(ui->blue_slider, value);
+        led.color(rgb(ui->red_spin->value(), ui->green_spin->value(), value));
+    });
 
     ////////////////////
     led.on_level_changed([&](int value)
